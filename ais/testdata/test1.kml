@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>testdata/test1.kml</name>
+	<StyleMap id="vesselStyleMap">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#normVesselStyle</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#hlightVesselStyle</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="hlightVesselStyle">
+		<IconStyle>
+            <scale>1.1</scale>  
+			<Icon>
+				<href>http://alerts.skytruth.org/markers/vessel_direction.png</href>
+			</Icon>
+            <hotSpot x="16" y="3" xunits="pixels" yunits="pixels"/>
+            <heading>90</heading>
+		</IconStyle>
+        <LabelStyle><color>ffff9999</color><scale>0.8</scale></LabelStyle>
+	</Style>
+	<Style id="normVesselStyle">
+		<IconStyle>
+		  <color>ffff9999</color>
+		  <Icon><href>http://alerts.skytruth.org/markers/vessel_direction.png</href></Icon>
+          <hotSpot x="16" y="3" xunits="pixels" yunits="pixels"/>
+          <heading>90</heading>
+		</IconStyle>
+        <LabelStyle><scale>0</scale></LabelStyle>
+	</Style>
+	<StyleMap id="trackStyleMap">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#normTrackStyle</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#hlightTrackStyle</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="hlightTrackStyle">
+		<LineStyle>
+			<color>ff99ff99</color>
+			<width>2</width>
+		</LineStyle>
+	</Style>
+	<Style id="normTrackStyle">
+		<LineStyle>
+			<color>ff99ff99</color>
+			<width>1.2</width>
+		</LineStyle>
+	</Style>	
+    <Folder>
+    <name>352301000</name>
+	<Placemark>
+	<name>Vessel Track</name>
+	<styleUrl>#trackStyleMap</styleUrl>
+	<LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		    -119.015801667,-24.2778633333,0
+		</coordinates>
+	</LineString>
+	<TimeSpan><begin>2012-11-07T22:30:33Z</begin><end>2012-11-07T22:30:33Z</end></TimeSpan>
+</Placemark>
+<Placemark>
+    <name>2012-11-07 22:30:33</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-07T22:30:33Z</when></TimeStamp>
+    <Point>
+        <coordinates>-119.015801667,-24.2778633333,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>111.400001526</heading></IconStyle></Style>
+</Placemark>
+</Folder>
+
+<Folder>
+    <name>564708000</name>
+	<Placemark>
+	<name>Vessel Track</name>
+	<styleUrl>#trackStyleMap</styleUrl>
+	<LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		    -114.243381667,-19.9139333333,0 -114.235666667,-19.9140416667,0
+		</coordinates>
+	</LineString>
+	<TimeSpan><begin>2012-11-08T05:23:46Z</begin><end>2012-11-08T05:25:56Z</end></TimeSpan>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:23:46</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:23:46Z</when></TimeStamp>
+    <Point>
+        <coordinates>-114.243381667,-19.9139333333,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>91</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:25:56</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:25:56Z</when></TimeStamp>
+    <Point>
+        <coordinates>-114.235666667,-19.9140416667,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>91.0999984741</heading></IconStyle></Style>
+</Placemark>
+</Folder>
+
+<Folder>
+    <name>373167000</name>
+	<Placemark>
+	<name>Vessel Track</name>
+	<styleUrl>#trackStyleMap</styleUrl>
+	<LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		    -104.236101667,-32.1791266667,0 -104.233265,-32.1806466667,0 -104.22801,-32.183595,0 -104.223608333,-32.1860583333,0 -104.221211667,-32.1874116667,0 -104.220786667,-32.1876416667,0 -104.220248333,-32.1879483333,0 -104.21984,-32.1882133333,0 -104.218641667,-32.1888816667,0 -104.218218333,-32.189105,0 -104.216641667,-32.1899316667,0 -104.210633333,-32.193255,0 -104.209975,-32.1936216667,0
+		</coordinates>
+	</LineString>
+	<TimeSpan><begin>2012-11-08T05:18:52Z</begin><end>2012-11-08T05:26:07Z</end></TimeSpan>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:18:52</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:18:52Z</when></TimeStamp>
+    <Point>
+        <coordinates>-104.236101667,-32.1791266667,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>125</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:19:39</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:19:39Z</when></TimeStamp>
+    <Point>
+        <coordinates>-104.233265,-32.1806466667,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>121.5</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:21:07</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:21:07Z</when></TimeStamp>
+    <Point>
+        <coordinates>-104.22801,-32.183595,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>123.400001526</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:22:19</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:22:19Z</when></TimeStamp>
+    <Point>
+        <coordinates>-104.223608333,-32.1860583333,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>122.699996948</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:22:59</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:22:59Z</when></TimeStamp>
+    <Point>
+        <coordinates>-104.221211667,-32.1874116667,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>122.800003052</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:23:07</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:23:07Z</when></TimeStamp>
+    <Point>
+        <coordinates>-104.220786667,-32.1876416667,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>123</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:23:15</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:23:15Z</when></TimeStamp>
+    <Point>
+        <coordinates>-104.220248333,-32.1879483333,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>123.699996948</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:23:22</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:23:22Z</when></TimeStamp>
+    <Point>
+        <coordinates>-104.21984,-32.1882133333,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>124.599998474</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:23:43</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:23:43Z</when></TimeStamp>
+    <Point>
+        <coordinates>-104.218641667,-32.1888816667,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>124.199996948</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:23:49</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:23:49Z</when></TimeStamp>
+    <Point>
+        <coordinates>-104.218218333,-32.189105,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>122.900001526</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:24:15</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:24:15Z</when></TimeStamp>
+    <Point>
+        <coordinates>-104.216641667,-32.1899316667,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>121.5</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:25:55</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:25:55Z</when></TimeStamp>
+    <Point>
+        <coordinates>-104.210633333,-32.193255,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>122.800003052</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:26:07</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:26:07Z</when></TimeStamp>
+    <Point>
+        <coordinates>-104.209975,-32.1936216667,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>124.599998474</heading></IconStyle></Style>
+</Placemark>
+</Folder>
+
+<Folder>
+    <name>224050000</name>
+	<Placemark>
+	<name>Vessel Track</name>
+	<styleUrl>#trackStyleMap</styleUrl>
+	<LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		    -108.730586667,-30.8007783333,0 -108.736425,-30.7995583333,0 -108.74159,-30.7984483333,0 -108.741905,-30.798385,0 -108.74249,-30.7982216667,0 -108.742988333,-30.7981183333,0 -108.74792,-30.797055,0
+		</coordinates>
+	</LineString>
+	<TimeSpan><begin>2012-11-08T05:19:38Z</begin><end>2012-11-08T05:25:58Z</end></TimeSpan>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:19:38</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:19:38Z</when></TimeStamp>
+    <Point>
+        <coordinates>-108.730586667,-30.8007783333,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>279.200012207</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:21:46</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:21:46Z</when></TimeStamp>
+    <Point>
+        <coordinates>-108.736425,-30.7995583333,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>282.700012207</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:23:38</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:23:38Z</when></TimeStamp>
+    <Point>
+        <coordinates>-108.74159,-30.7984483333,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>294.799987793</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:23:46</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:23:46Z</when></TimeStamp>
+    <Point>
+        <coordinates>-108.741905,-30.798385,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>293.100006104</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:23:58</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:23:58Z</when></TimeStamp>
+    <Point>
+        <coordinates>-108.74249,-30.7982216667,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>294.5</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:24:10</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:24:10Z</when></TimeStamp>
+    <Point>
+        <coordinates>-108.742988333,-30.7981183333,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>279.399993896</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:25:58</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:25:58Z</when></TimeStamp>
+    <Point>
+        <coordinates>-108.74792,-30.797055,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>283.5</heading></IconStyle></Style>
+</Placemark>
+</Folder>
+
+<Folder>
+    <name>477089900</name>
+	<Placemark>
+	<name>Vessel Track</name>
+	<styleUrl>#trackStyleMap</styleUrl>
+	<LineString>
+		<tessellate>1</tessellate>
+		<coordinates>
+		    -110.63185,-31.1635166667,0 -110.637116667,-31.1606,0 -110.643066667,-31.1573666667,0 -110.644666667,-31.1565,0 -110.645666667,-31.1559333333,0
+		</coordinates>
+	</LineString>
+	<TimeSpan><begin>2012-11-08T05:19:37Z</begin><end>2012-11-08T05:23:56Z</end></TimeSpan>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:19:37</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:19:37Z</when></TimeStamp>
+    <Point>
+        <coordinates>-110.63185,-31.1635166667,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>301.899993896</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:21:16</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:21:16Z</when></TimeStamp>
+    <Point>
+        <coordinates>-110.637116667,-31.1606,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>303.5</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:23:07</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:23:07Z</when></TimeStamp>
+    <Point>
+        <coordinates>-110.643066667,-31.1573666667,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>301.899993896</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:23:37</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:23:37Z</when></TimeStamp>
+    <Point>
+        <coordinates>-110.644666667,-31.1565,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>302.5</heading></IconStyle></Style>
+</Placemark>
+<Placemark>
+    <name>2012-11-08 05:23:56</name>
+	<styleUrl>#vesselStyleMap</styleUrl>
+    <TimeStamp><when>2012-11-08T05:23:56Z</when></TimeStamp>
+    <Point>
+        <coordinates>-110.645666667,-31.1559333333,0</coordinates>
+    </Point>
+    <Style><IconStyle><heading>303</heading></IconStyle></Style>
+</Placemark>
+</Folder>
+
+</Document>
+</kml>
