@@ -53,7 +53,7 @@ $BODY$
     BEGIN
 	loc := st_setsrid(st_makepoint(NEW.longitude, NEW.latitude), (4326));
 
-	IF EXISTS ( SELECT 1 FROM ais WHERE ais."MMSI" = NEW."MMSI" AND ais.datetime = NEW.datetime) THEN
+	IF EXISTS ( SELECT 1 FROM ais WHERE ais.mmsi = NEW.mmsi AND ais.datetime = NEW.datetime) THEN
 		-- this record already exists.  Need to turn this into an update
 		-- and return null to cancel the insert
 		UPDATE ais SET
@@ -63,7 +63,7 @@ $BODY$
 			cog = NEW.cog,
 			latitude = NEW.latitude,
 			longitude = NEW.longitude
-		WHERE ais."MMSI" = NEW."MMSI" AND ais.datetime = NEW.datetime;
+		WHERE ais.mmsi = NEW.mmsi AND ais.datetime = NEW.datetime;
 		return NULL;
 	ELSE
 		NEW.location := loc;
@@ -75,7 +75,6 @@ $BODY$
   COST 100;
 ALTER FUNCTION ais_insert()
   OWNER TO postgres;
-
 
 -- Trigger: ais_insert on ais
 

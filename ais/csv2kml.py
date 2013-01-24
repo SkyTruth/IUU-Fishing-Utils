@@ -6,6 +6,7 @@ import csv
 from dateutil.parser import parse as parse_date
 from datetime import datetime, timedelta
 import sys
+import bisect
    
    
 MIN_INTERVAL = 60   # minimum interval between placemarks in seconds
@@ -137,10 +138,20 @@ document_kml_template = Template(
 vessel_kml_template = Template(
 """<Folder>
     <name>$name</name>
+<Folder>
+    <name>Vessel Tracks</name>
 $track_kml
+</Folder>
+
+<Folder>
+    <name>AIS Points</name>
 $placemarks_kml
 </Folder>
+
+</Folder>
 """	 )
+
+
 
 track_template = Template (
 """	<Placemark>
@@ -162,15 +173,17 @@ placemark_template = Template(
     <name>$datetime</name>
     <description>
 <table width="300">
-    <tr><th align="right">Vessel Name</th><td></td></tr>
-    <tr><th align="right">MMSI</th><td>$MMSI</td></tr>
+    <tr><th align="right">Vessel Name</th><td>$name</td></tr>
+    <tr><th align="right">Vessel Type</th><td>$type</td></tr>
+    <tr><th align="right">MMSI</th><td>$mmsi</td></tr>
+    <tr><th align="right">Length</th><td>$length meters</td></tr>
     <tr><th align="right">Datetime</th><td>$datetime</td></tr>
     <tr><th align="right">True Heading</th><td>$true_heading</td></tr>
     <tr><th align="right">Speed Over Ground</th><td>$sog</td></tr>
     <tr><th align="right">Course Over Ground</th><td>$cog</td></tr>
     <tr><th align="right">Latitude</th><td>$latitude</td></tr>
     <tr><th align="right">Longitude</th><td>$longitude</td></tr>
-    <tr><th align="right"></th><td><a href="">More Info</a></td></tr>
+    <tr><th align="right">Vessel Info</th><td><a href="$marinetraffic_url">marinetraffic.com</a> <a href="$itu_url">ITU</a></td></tr>
 </table>    
     </description>    
 	<styleUrl>#vesselStyleMap</styleUrl>
@@ -182,8 +195,40 @@ placemark_template = Template(
 </Placemark>""")
 
 
+
+class Vessel ():
+    def __init__(self, params):
+        self.mmsi = params['mmsi']  # This can't be null
+        self.name = params.get('name')
+        self.vessel_type = params.get('type'),
+        self.length = params.get('length'),
+        self.url = params.get('url')
+        self.marinetraffic_url = params.get('marinetraffic_url')
+        self.itu_url = params.get('itu_url')
+        self.ais = []
+        self.timestamps = []
+            
+    def add_ais (self, ais):
+        idx = 0
+        dt = ais['datetime']
+        if self.ais:
+            # ignore anything that is less than MIN_INTERVAL seconds away from a record we already have in the list
+            idx = bisect.bisect (self.timestamps,dt)      
+            if idx > 0 and abs((dt - self.timestamps[idx-1]).total_seconds()) < MIN_INTERVAL:
+                return
+            if idx < len(self.timestamps) and abs((dt - self.timestamps[idx]).total_seconds()) < MIN_INTERVAL:
+                return
+        self.timestamps.insert (idx, dt)
+        self.ais.insert (idx, ais)
+        
+    
+
+        
+
 def convert (infile_name, outfile_name):
     vessels = read_csv (infile_name)
+    
+    print "Found %s vessels" % len(vessels)
     
     params = {'name': outfile_name}
     params['vessels_kml'] = '\n'.join([get_vessel_kml(vessel, mmsi) for mmsi,vessel in vessels.items()])
@@ -192,9 +237,8 @@ def convert (infile_name, outfile_name):
         kml_file.write (document_kml)    
     
 def get_vessel_kml (vessel, mmsi):
-    keys = sorted(vessel.iterkeys())
-    params = {'name': mmsi}
-    params['placemarks_kml'] = '\n'.join([get_placemark_kml(vessel[k]) for k in keys])
+    params = {'name': vessel.name}
+    params['placemarks_kml'] = '\n'.join([get_placemark_kml(ais) for ais  in vessel.ais])
     params['track_kml'] = get_track_kml (vessel)
     return vessel_kml_template.substitute (params)
     
@@ -202,7 +246,11 @@ def get_vessel_kml (vessel, mmsi):
 def get_placemark_kml (record):
     params = record
     params['timestamp'] = record['datetime'].strftime ('%Y-%m-%dT%H:%M:%SZ') 
-    c = min(float(record['sog']), 15) * 17
+    try:
+        c = min(float(record['sog']), 15) * 17
+    except:
+        c = 0    
+        
     params['icon_color'] = 'ff00%02x%02x' % (c, 255-c)
     return  placemark_template.substitute (params)
 
@@ -222,19 +270,18 @@ def get_track_segment_kml (records, style):
     return track_template.substitute(params)
     
 def get_track_kml (vessel):
-    keys = sorted(vessel.iterkeys())
-    
     kml = []
     records = []
-    last_dt = keys[0]
+    last_dt = vessel.timestamps[0]
     last_style = get_time_gap_style (last_dt, last_dt)
         
-    for dt in keys:
+    for ais in vessel.ais:
+        dt = ais['datetime']
         style = get_time_gap_style (dt, last_dt)
         if style != last_style and records:
             kml.append (get_track_segment_kml(records, last_style))
             records = [records[-1]]
-        records.append (vessel[dt])
+        records.append (ais)
         last_style = style
         last_dt = dt
     
@@ -251,19 +298,21 @@ def read_csv (infile_name):
         dialect = csv.Sniffer().sniff(csvfile.read(1024), delimiters=',') 
         csvfile.seek(0)   
         reader = csv.DictReader(csvfile, dialect=dialect) 
-
         last_dt = datetime (2000,1,1)
         for row in reader:
             dt = row.get('datetime')
-            mmsi = row.get('MMSI')
+            mmsi = row.get('mmsi')
+            if not row.get('name'):
+                row['name'] = mmsi
+            row['marinetraffic_url'] = 'http://www.marinetraffic.com/ais/shipdetails.aspx?MMSI=%s'% mmsi
+            row['itu_url'] = 'http://www.itu.int/cgi-bin/htsh/mars/ship_search.sh?sh_mmsi=%s' % mmsi
             if mmsi and dt:
                 if not vessels.get(mmsi):
-                    vessels[mmsi] = {}
+                    vessels[mmsi] = Vessel (row)
                 dt = parse_date(dt, fuzzy=1)
                 row['datetime'] = dt
-                if abs((dt-last_dt).total_seconds()) > MIN_INTERVAL:
-                    vessels[mmsi][dt] = row   
-                    last_dt = dt
+                
+                vessels[mmsi].add_ais(row)
                     
     return vessels
         

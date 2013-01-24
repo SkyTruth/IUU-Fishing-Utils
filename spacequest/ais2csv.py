@@ -8,7 +8,7 @@ import ais
 
 def convert_spacequest (infile_name, outfile_name):
     fields = [
-        'datetime', 'MMSI', 'latitude', 'longitude', 'true_heading', 'sog', 'cog' 
+        'datetime', 'mmsi', 'latitude', 'longitude', 'true_heading', 'sog', 'cog' 
         ]
         
     f_in = open(infile_name, 'r')

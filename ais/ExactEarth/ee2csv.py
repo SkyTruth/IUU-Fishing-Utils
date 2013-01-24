@@ -40,12 +40,15 @@ def convert (infile_name, outfile_name):
 def convert_row (row_in):
     row_out = {}
     for k,v in field_map.items():
-        row_out[k] = row_in.get(v)
+        new_v = row_in.get(v,'')
+        if new_v == 'None': new_v = ''   #convert 'None' to ''
+        row_out[k] = new_v
 
     # fix up datetime    
     dt = row_out.get('datetime')
     if dt:
         row_out['datetime'] = "%s-%s-%s %s:%s:%s" % (dt[0:4],dt[4:6],dt[6:8],dt[9:11],dt[11:13],dt[13:15])
+        
     return row_out
         
 
