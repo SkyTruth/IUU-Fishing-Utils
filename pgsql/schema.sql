@@ -27,7 +27,7 @@ ALTER TABLE ais
 CREATE UNIQUE INDEX ais_mmsi_datetime
   ON ais
   USING btree
-  (mmsi COLLATE pg_catalog."default", datetime);
+  (mmsi, datetime);
 
 -- Index: ais_seqid
 
