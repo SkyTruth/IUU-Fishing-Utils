@@ -51,7 +51,7 @@ $BODY$
     DECLARE
         loc      geometry;
     BEGIN
-	loc := st_setsrid(st_makepoint(NEW.longitude, NEW.latitude), (4326));
+	loc := st_setsrid(st_makepointm(NEW.longitude, NEW.latitude, extract(epoch from new.datetime)), (4326));
 
 	IF EXISTS ( SELECT 1 FROM ais WHERE ais.mmsi = NEW.mmsi AND ais.datetime = NEW.datetime) THEN
 		-- this record already exists.  Need to turn this into an update
@@ -110,3 +110,17 @@ WITH (
 ALTER TABLE vessel
   OWNER TO postgres;
 
+
+create view ais_path as
+ select
+   mmsi as mmsi,
+   ST_MakeLine(location) as line
+ from
+  (select
+    *
+   from
+    ais
+   order by mmsi, datetime
+  ) as a
+ group by mmsi
+ having count(location) > 1;
