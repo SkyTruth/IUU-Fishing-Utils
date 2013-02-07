@@ -37,7 +37,7 @@ else:
     with contextlib.closing(psycopg2.connect(**settings['db'])) as conn:
         with contextlib.closing(conn.cursor()) as cur:
 
-            where = []
+            where = ['true']
             if 'timemax' in args:
                 where.append("datetime <= %(timemax)s")
             if 'timemin' in args:
@@ -53,7 +53,7 @@ else:
             if 'mmsi' in args:
                 where.append("ais.mmsi = %(mmsi)s")
                 
-            cur.execute("select * from ais join vessel on ais.mmsi = vessel.mmsi where " + " and ".join(where) + " order by ais.mmsi, datetime", args);
+            cur.execute("select datetime, ais.mmsi as mmsi, latitude, longitude, true_heading, sog, cog, location, name, type, length, url from ais left join vessel on ais.mmsi = vessel.mmsi where " + " and ".join(where) + " order by ais.mmsi, datetime", args);
             
             print kml.convert(dictreader(cur), args.get('name', 'extract2kml'))
 
