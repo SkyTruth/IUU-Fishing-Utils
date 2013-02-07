@@ -10,7 +10,10 @@ field_map = {
     'longitude' : 'Longitude',
     'true_heading' : 'Heading',
     'sog' : 'SOG',
-    'cog' : 'COG'
+    'cog' : 'COG',
+    'name': 'Vessel_Name',
+    'type': 'Ship_Type',
+    'length': 'Dimension_to_Bow',
 }
 
 fields = field_map.keys()

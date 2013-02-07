@@ -41,6 +41,13 @@ with contextlib.closing(psycopg2.connect(**settings['db'])) as conn:
                                                 except:
                                                     print row
                                                     raise
+                                                if row['name'] is not None and row['type'] is not None:
+                                                    row['url'] = 'http://www.marinetraffic.com/ais/shipdetails.aspx?MMSI=' + row['mmsi']
+                                                    try:
+                                                        cur.execute("insert into vessel (mmsi, name, type, length, url) select %(mmsi)s, %(name)s, %(type)s, %(length)s, %(url)s where %(mmsi)s not in (select mmsi from vessel)", row)
+                                                    except:
+                                                        print row
+                                                        raise
                                             cur.execute("insert into downloaded_exactearth (filename) values (%(filename)s)", {'filename': filename})
 
                                         except Exception, e:
