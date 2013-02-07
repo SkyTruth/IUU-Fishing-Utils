@@ -4,7 +4,7 @@ import re
 from string import Template
 import csv
 from dateutil.parser import parse as parse_date
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import sys
 import bisect
    
@@ -152,7 +152,6 @@ $placemarks_kml
 """	 )
 
 
-
 track_template = Template (
 """	<Placemark>
 	<name>$name</name>
@@ -166,6 +165,13 @@ track_template = Template (
 	<TimeSpan><begin>$time_begin</begin><end>$time_end</end></TimeSpan>
  	
 </Placemark>""")
+	
+placemark_folder_template = Template(
+"""<Folder>
+    <name>$name</name>
+$placemarks_kml
+</Folder>
+"""	 )
 	
 
 placemark_template = Template(
@@ -238,10 +244,24 @@ def convert (infile_name, outfile_name):
     
 def get_vessel_kml (vessel, mmsi):
     params = {'name': vessel.name}
-    params['placemarks_kml'] = '\n'.join([get_placemark_kml(ais) for ais  in vessel.ais])
+#    params['placemarks_kml'] = '\n'.join([get_placemark_kml(ais) for ais  in vessel.ais])
+    params['placemarks_kml'] = get_placemark_folders_kml(vessel)
     params['track_kml'] = get_track_kml (vessel)
     return vessel_kml_template.substitute (params)
     
+def get_placemark_folders_kml (vessel):
+    ais_days = {}
+    for ais in vessel.ais:
+        d = ais['datetime'].date()
+        if not ais_days.get(d):
+            ais_days[d] = []
+        ais_days[d].append (ais)
+    return '\n'.join([get_placemark_folder_kml(dt.strftime('%Y-%m-%d'), ais_days[dt]) for dt in sorted(ais_days.keys())])
+                
+def get_placemark_folder_kml (name, records):
+    params = {'name': name}
+    params['placemarks_kml'] = '\n'.join([get_placemark_kml(ais) for ais  in records])
+    return placemark_folder_template.substitute (params)
 
 def get_placemark_kml (record):
     params = record
