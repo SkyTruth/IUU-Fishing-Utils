@@ -43,13 +43,13 @@ else:
             if 'timemin' in args:
                 where.append("datetime >= %(timemin)s")
             if 'latmin' in args:
-                where.append("latitude <= %(latmin)s")
+                where.append("latitude <= %(latmax)s")
             if 'latmax' in args:
-                where.append("latitude >= %(latmax)s")
+                where.append("latitude >= %(latmin)s")
             if 'lonmin' in args:
-                where.append("lonitude <= %(lonmin)s")
+                where.append("lonitude <= %(lonmax)s")
             if 'lonmax' in args:
-                where.append("lonitude >= %(lonmax)s")
+                where.append("lonitude >= %(lonmin)s")
             if 'mmsi' in args:
                 where.append("ais.mmsi = %(mmsi)s")
                 
