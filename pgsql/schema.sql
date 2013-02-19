@@ -12,7 +12,8 @@ CREATE TABLE ais
   true_heading double precision,
   sog double precision,
   cog double precision,
-  location geometry NOT NULL
+  location geometry NOT NULL,
+  src character varying (128)
 )
 WITH (
   OIDS=FALSE
