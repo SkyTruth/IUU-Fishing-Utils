@@ -112,15 +112,25 @@ ALTER TABLE vessel
 
 
 create view ais_path as
- select
-   mmsi as mmsi,
-   ST_MakeLine(location) as line
- from
-  (select
-    *
-   from
-    ais
-   order by mmsi, datetime
-  ) as a
- group by mmsi
- having count(location) > 1;
+  SELECT
+    a.mmsi,
+    st_makeline(a.location) AS line,
+    min(a.datetime) AS timemin,
+    max(a.datetime) AS timemax
+  FROM
+    (SELECT
+       ais.seqid,
+       ais.datetime,
+       ais.mmsi,
+       ais.latitude,
+       ais.longitude,
+       ais.true_heading,
+       ais.sog,
+       ais.cog,
+       ais.location
+     FROM ais
+     ORDER BY
+       ais.mmsi,
+       ais.datetime) a
+  GROUP BY a.mmsi
+  HAVING count(a.location) > 1;
