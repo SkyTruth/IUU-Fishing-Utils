@@ -178,19 +178,9 @@ placemark_template = Template(
 """<Placemark>
     <name>$datetime</name>
     <description>
-<table width="300">
-    <tr><th align="right">Vessel Name</th><td>$name</td></tr>
-    <tr><th align="right">Vessel Type</th><td>$type</td></tr>
-    <tr><th align="right">MMSI</th><td>$mmsi</td></tr>
-    <tr><th align="right">Length</th><td>$length meters</td></tr>
-    <tr><th align="right">Datetime</th><td>$datetime</td></tr>
-    <tr><th align="right">True Heading</th><td>$true_heading</td></tr>
-    <tr><th align="right">Speed Over Ground</th><td>$sog</td></tr>
-    <tr><th align="right">Course Over Ground</th><td>$cog</td></tr>
-    <tr><th align="right">Latitude</th><td>$latitude</td></tr>
-    <tr><th align="right">Longitude</th><td>$longitude</td></tr>
-    <tr><th align="right">Vessel Info</th><td><a href="$marinetraffic_url">marinetraffic.com</a> <a href="$itu_url">ITU</a></td></tr>
-</table>    
+       <table width="300">
+           $attributes
+       </table>    
     </description>    
 	<styleUrl>#vesselStyleMap</styleUrl>
     <TimeStamp><when>$timestamp</when></TimeStamp>
@@ -231,8 +221,8 @@ class Vessel ():
 
         
 
-def convert (infile_name, outfile_name):
-    vessels = read_csv (infile_name)
+def convert (infile_name, outfile_name, **options):
+    vessels = read_csv (infile_name, **options)
     
     print "Found %s vessels" % len(vessels)
     
@@ -264,13 +254,21 @@ def get_placemark_folder_kml (name, records):
     return placemark_folder_template.substitute (params)
 
 def get_placemark_kml (record):
-    params = record
+    params = {
+        "datetime": datetime(1970,1,1),
+        "cog": "",
+        "longitude": "",
+        "latitude": ""
+        }
+    params.update(record)
     params['timestamp'] = record['datetime'].strftime ('%Y-%m-%dT%H:%M:%SZ') 
+    params['attributes'] = '\n'.join(
+        '<tr><th align="right">%s</th><td>%s</td></tr>' % (key, value)
+        for (key, value) in record.iteritems())
     try:
         c = min(float(record['sog']), 15) * 17
     except:
-        c = 0    
-        
+        c = 0
     params['icon_color'] = 'ff00%02x%02x' % (c, 255-c)
     return  placemark_template.substitute (params)
 
@@ -311,27 +309,29 @@ def get_track_kml (vessel):
     return '\n'.join (kml)
     
 # load csv file into a dict keyed by MMSI, and then by timestamp
-def read_csv (infile_name):    
+def read_csv (infile_name, fieldnames = None, **options):    
     vessels = {}
     
     with open(infile_name, 'rb') as csvfile:  
         dialect = csv.Sniffer().sniff(csvfile.read(1024), delimiters=',') 
         csvfile.seek(0)   
-        reader = csv.DictReader(csvfile, dialect=dialect) 
+        reader = csv.DictReader(csvfile, dialect=dialect, fieldnames=fieldnames) 
         last_dt = datetime (2000,1,1)
         for row in reader:
-            dt = row.get('datetime')
             mmsi = row.get('mmsi')
-            if not row.get('name'):
+            if not row.get('name', ''):
                 row['name'] = mmsi
             row['marinetraffic_url'] = 'http://www.marinetraffic.com/ais/shipdetails.aspx?MMSI=%s'% mmsi
             row['itu_url'] = 'http://www.itu.int/cgi-bin/htsh/mars/ship_search.sh?sh_mmsi=%s' % mmsi
+            dt = row.get('datetime', '').strip()
             if mmsi and dt:
-                if not vessels.get(mmsi):
-                    vessels[mmsi] = Vessel (row)
-                dt = parse_date(dt, fuzzy=1)
+                if dt.isalnum():
+                    dt = datetime.fromtimestamp(float(dt))
+                else:
+                    dt = parse_date(dt, fuzzy=1)
                 row['datetime'] = dt
-                
+                if not mmsi in vessels:
+                    vessels[mmsi] = Vessel(row)
                 vessels[mmsi].add_ais(row)
                     
     return vessels
@@ -360,8 +360,14 @@ def main ():
     parser.add_option("-v", "--verbose",
                           action="store_const", dest="loglevel", const=logging.DEBUG, 
                           help="Output debugging information")
+    parser.add_option("-f", "--fieldnames",
+                          action="store", dest="fieldnames", default=None,
+                          help="Field names if not specified in the file")
 
     (options, args) = parser.parse_args()
+
+    if options.fieldnames is not None:
+        options.fieldnames = options.fieldnames.split(",")
     
     if len(args) < 2:
         parser.error("Not enough arguments.")
@@ -375,8 +381,8 @@ def main ():
     outfile_name = args[1]
     
     print '%s => %s' % (infile_name, outfile_name)
-    
-    convert (infile_name, outfile_name)
+
+    convert (infile_name, outfile_name, **options.__dict__)
     
 
 if __name__ == "__main__":
